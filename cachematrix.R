@@ -3,35 +3,36 @@
 
 ## makeCacheMatrix function creates a special vector which is really a list containing
 # fucntions to set the value of matrix, get the value of matrix, set the inverse of matrix, 
-# get the inverse of the matrix. 
+# get the inverse of the matrix. It initialises inverse "matinv" as nUll. 
 
 makeCacheMatrix <- function(x = matrix()) {
-  m<- NULL
+  matinv<- NULL
   set<- function(y){
     x<<-y
-    m<<- NULL
+    matinv<<- NULL
   }
 
   get<- function() x
-  setinv<- function(solve) m<<- solve
-  getinv<- function() m
+  setinv<- function(inverse) matinv<<- inverse
+  getinv<- function() matinv
   list(set=set, get=get, setinv=setinv, getinv=getinv)
 }
 
 
-## Following function calculates the inverse of the matrix .However, it first checks
+## Following function calculates the inverse of the matrix "matinverted" .However, it first checks
 #to see if the inverse has already been calculated. If so it gets its value from cache and 
 # skips the computation. Otherwise, it calculates the inverse of the data and sets its value 
 # in the cache via setinv function. 
+
 cacheSolve <- function(x, ...) {
-  m<- x$getinv()
+  matinverted<- x$getinv()
   if(!is.null(m)) {
     message("getting cached data")
-    return(m)
+    return(matinverted)
   }
   data<- x$get()
-  m<- solve(data,...)
-  x$setinv(m)
-  m
-        ## Return a matrix that is the inverse of 'x'
+  matinverted<- solve(data,...)
+  x$setinv(matinverted)
+  matinverted
+        
 }
